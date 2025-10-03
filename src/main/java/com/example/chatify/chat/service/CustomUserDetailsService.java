@@ -1,6 +1,6 @@
 package com.example.chatify.chat.service;
 
-import com.example.chatify.chat.model.users;
+import com.example.chatify.chat.model.User;
 import com.example.chatify.chat.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +15,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        users user= userRepository.findByUsername(username);
+        User user= userRepository.findByUsername(username);
         if(user==null){
             throw new UsernameNotFoundException("User not found with the username"+username);
         }

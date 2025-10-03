@@ -4,7 +4,7 @@ import com.example.chatify.chat.DTO.UserLoginDTO;
 import com.example.chatify.chat.DTO.UserRegisterDTO;
 import com.example.chatify.chat.DTO.UserResponseDTO;
 import com.example.chatify.chat.DTO.config.UserMapper;
-import com.example.chatify.chat.model.users;
+import com.example.chatify.chat.model.User;
 import com.example.chatify.chat.repository.UserRepository;
 import com.example.chatify.chat.security.JwtUtil;
 import jakarta.servlet.http.Cookie;
@@ -55,7 +55,7 @@ public class AuthController {
         {
             return new ResponseEntity<>("Email is already in use", HttpStatus.CONFLICT);
         }
-        users newUser=userMapper.dtoToUsers(userRegisterDTO);
+        User newUser=userMapper.dtoToUsers(userRegisterDTO);
         newUser.setPassword(encoder.encode(userRegisterDTO.getPassword()));
         userRepository.save(newUser);
         return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
@@ -68,7 +68,7 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(userLoginDTO.getUsername(),userLoginDTO.getPassword())
         );
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        users dbuser=userRepository.findByUsername(userDetails.getUsername());
+        User dbuser=userRepository.findByUsername(userDetails.getUsername());
         if(dbuser==null)
         {
             return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
@@ -108,7 +108,7 @@ public class AuthController {
         if(jwtUtil.validateToken(accessToken))
         {
             String username=jwtUtil.getUsernameFromToken(accessToken);
-            users dbuser=userRepository.findByUsername(username);
+            User dbuser=userRepository.findByUsername(username);
 
             if(dbuser==null)
             {
@@ -140,7 +140,7 @@ public class AuthController {
         if(refreshToken!=null && jwtUtil.validateToken(refreshToken))
         {
             String username=jwtUtil.getUsernameFromToken(refreshToken);
-            users dbuser=userRepository.findByUsername(username);
+            User dbuser=userRepository.findByUsername(username);
 
             if(dbuser==null)
             {

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
@@ -16,23 +17,24 @@ uniqueConstraints ={
     @UniqueConstraint(columnNames ={"user_low_id","user_high_id"} )
         })
 
-public class friendships {
+public class Friendships {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(optional = false) @JoinColumn(name="user_low_id")
-    private users userLow;
+    private User userLow;
 
     @ManyToOne(optional = false) @JoinColumn(name="user_high_id")
-    private users userHigh;
+    private User userHigh;
 
-    @Column(nullable = false)
-    private Instant createdAt=Instant.now();
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
 
-    public static friendships of(users a,users b)
+    public static Friendships of(User a, User b)
     {
-        friendships f=new friendships();
+        Friendships f=new Friendships();
         if(a.getId().compareTo(b.getId())<=0)
         {
             f.userLow=a;

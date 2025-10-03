@@ -1,6 +1,6 @@
 package com.example.chatify.chat.security;
 
-import com.example.chatify.chat.model.users;
+import com.example.chatify.chat.model.User;
 import com.example.chatify.chat.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -37,7 +37,7 @@ public class AuthTokenFilter  extends OncePerRequestFilter {
             if(jwt!=null && jwtUtil.validateToken(jwt))
             {
                 String username=jwtUtil.getUsernameFromToken(jwt);
-                users user=userRepository.findByUsername(username);
+                User user=userRepository.findByUsername(username);
                 if(user==null)
                 {
                     throw new UsernameNotFoundException("user not found");
